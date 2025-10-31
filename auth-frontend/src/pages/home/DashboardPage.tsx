@@ -1,39 +1,19 @@
-import { Menu } from "lucide-react";
-import { useState } from "react";
+import { useAuthStore } from "@/stores/auth/useAuthStore";
 
 const DashboardPage = () => {
-  const [open, setOpen] = useState(false);
+  const { logout } = useAuthStore();
 
   return (
-    <div className="h-screen w-full overflow-y-scroll no-scrollbar p-1 px-2 md:px-4">
+    <div className="bg-black h-screen w-full overflow-y-scroll no-scrollbar p-1 px-2 md:px-4">
       <div className="w-full flex items-center gap-2 my-2 mb-3">
-        <Menu
-          className="md:hidden text-white text-2xl cursor-pointer"
-          onClick={() => setOpen(true)}
-        />
-        <h1 className="text-white text-lg font-bold">Dashboard Overview</h1>
-      </div>
-
-      {/* Example sidebar toggle (optional) */}
-      {open && (
-        <div
-          className="fixed inset-0 bg-black/50 z-40"
-          onClick={() => setOpen(false)}
+        <h1 className="text-white text-lg font-bold">Dashboard</h1>
+        <button
+          onClick={logout}
+          className="ml-auto bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-lg text-sm transition"
         >
-          <div
-            className="absolute left-0 top-0 h-full w-64 bg-gray-800 text-white p-4"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              onClick={() => setOpen(false)}
-              className="text-sm text-gray-400 hover:text-white mb-4"
-            >
-              Close
-            </button>
-            <p>Sidebar content here...</p>
-          </div>
-        </div>
-      )}
+          Logout
+        </button>
+      </div>
     </div>
   );
 };

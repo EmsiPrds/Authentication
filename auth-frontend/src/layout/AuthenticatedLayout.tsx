@@ -8,8 +8,8 @@ const AuthenticatedLayout = () => {
     return <Navigate to="/" replace />;
   }
   return (
-    <div className="h-screen w-screen overflow-hidden flex justify-end bg-linear-to-br from-primary via-black to-primary">
-      <div className="h-screen w-full md:w-[calc(100%-280px)]">
+    <div className="h-screen w-screen overflow-hidden flex justify-end bg-black">
+      <div className="h-screen w-full ">
         <Outlet />
       </div>
     </div>
