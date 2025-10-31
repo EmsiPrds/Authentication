@@ -10,7 +10,7 @@ export const registerApi = async ({
   username,
   password,
 }: Partial<AccountType>) => {
-  const response = await axiosInstance.post("/auth/admin/register", {
+  const response = await axiosInstance.post("/auth/register", {
     firstName,
     middleName,
     lastName,
@@ -29,7 +29,7 @@ export const loginApi = async ({
   username: string;
   password: string;
 }) => {
-  const response = await axiosInstance.post("/auth/admin/login", {
+  const response = await axiosInstance.post("/auth/login", {
     username,
     password,
   });

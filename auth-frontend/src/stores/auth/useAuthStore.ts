@@ -22,7 +22,7 @@ export const useAuthStore = create(
       }) => {
         set({ loading: true });
         try {
-          const response = await registerApi({
+          await registerApi({
             firstName,
             middleName,
             lastName,
@@ -31,7 +31,6 @@ export const useAuthStore = create(
             username,
             password,
           });
-          set({ authUser: response.data.user });
           return true;
         } catch (error) {
           console.error("Error registering in account", error);

@@ -1,0 +1,149 @@
+import LoadingSmall from "@/components/custom/loading/LoadingSmall";
+import TextField from "@/components/custom/TextField";
+import { useAuthStore } from "@/stores/auth/useAuthStore";
+import { motion } from "framer-motion";
+import { AtSign, Eye, EyeOff, Lock } from "lucide-react";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+
+interface FormData {
+  username: string;
+  password: string;
+}
+
+const LoginPage: React.FC = () => {
+  const { loginAccount, loading } = useAuthStore();
+
+  const [form, setForm] = useState<FormData>({
+    username: "",
+    password: "",
+  });
+  const [showPassword, setShowPassword] = useState(false);
+
+  const navigate = useNavigate();
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const success = await loginAccount(form);
+
+    if (success) {
+      setForm({
+        username: "",
+        password: "",
+      });
+      navigate("/home/dashboard");
+    }
+  };
+
+  return (
+    <div className="bg-black h-full w-full flex items-center justify-center p-4">
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="bg-white w-full md:max-w-md px-4 md:px-8 py-8 shadow-2xl bg-primary rounded-2xl"
+      >
+        {/* Header */}
+        <motion.div
+          className="text-center mb-8 "
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.5 }}
+        >
+          <Link
+            to={"/"}
+            className="font-poppins text-3xl font-bold text-yellow mb-2"
+          >
+            Auth10-tication
+          </Link>
+          <p className="text-black text-sm">Sign in to your account</p>
+        </motion.div>
+
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Username */}
+          <TextField
+            name="username"
+            placeholder="Username *"
+            value={form.username}
+            onChange={handleChange}
+            required
+            autoFocus
+            icon={<AtSign className="text-yellow-400" />}
+          />
+
+          {/* Password */}
+          <TextField
+            type={showPassword ? "text" : "password"}
+            name="password"
+            placeholder="Password *"
+            value={form.password}
+            onChange={handleChange}
+            required
+            icon={<Lock className="text-yellow-400" />}
+            rightIcon={
+              <button
+                type="button"
+                tabIndex={-1}
+                className="text-yellow-400 hover:text-yellow-600 transition"
+                onClick={() => setShowPassword((v) => !v)}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? (
+                  <EyeOff className="w-5 h-5" />
+                ) : (
+                  <Eye className="w-5 h-5" />
+                )}
+              </button>
+            }
+          />
+
+          {/* Register link */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.5 }}
+            className="w-full flex items-center justify-center gap-1"
+          >
+            <p className="text-black text-sm">Don't have an account?</p>
+            <button
+              type="button"
+              className="text-yellow text-sm cursor-pointer hover:underline"
+              onClick={() => navigate("/auth/register")}
+            >
+              Register here
+            </button>
+          </motion.div>
+
+          {/* Login Button */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.5 }}
+          >
+            <motion.button
+              type="submit"
+              disabled={loading}
+              className={`${
+                loading
+                  ? "cursor-not-allowed opacity-80"
+                  : "cursor-pointer hover:scale-101 hover:shadow-xl transition-all"
+              } w-full py-3 rounded-xl bg-linear-to-r from-yellow-700 to-yellow-500 text-white font-bold text-lg mt-2 shadow-md`}
+              whileTap={{ scale: 0.98 }}
+            >
+              {loading ? <LoadingSmall /> : "Sign In"}
+            </motion.button>
+          </motion.div>
+        </form>
+      </motion.div>
+    </div>
+  );
+};
+
+export default LoginPage;
